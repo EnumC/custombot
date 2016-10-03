@@ -29,63 +29,20 @@ namespace DiscordBot
         private ulong[] allowedUserID = {88513309854138368, 170040753425219584, 210507266233860097};
         static void Main(string[] args)
         {
-            // Some biolerplate to react to close window event, CTRL-C, kill, etc
-            _handler += new EventHandler(Handler);
-            SetConsoleCtrlHandler(_handler, true);
+
 
             BotMainframe mainframe = new BotMainframe();
             mainframe.Start();
-
-            //hold the console so it doesn’t run off the end
-            while (!exitSystem)
-            {
-                Thread.Sleep(500);
-            }
         }
 
-        static bool exitSystem = false;
 
-        #region Trap application termination
-        [DllImport("Kernel32")]
-        private static extern bool SetConsoleCtrlHandler(EventHandler handler, bool add);
-
-        private delegate bool EventHandler(CtrlType sig);
-        static EventHandler _handler;
-
-        enum CtrlType
-        {
-            CTRL_C_EVENT = 0,
-            CTRL_BREAK_EVENT = 1,
-            CTRL_CLOSE_EVENT = 2,
-            CTRL_LOGOFF_EVENT = 5,
-            CTRL_SHUTDOWN_EVENT = 6
-        }
-
-        private static bool Handler(CtrlType sig)
-        {
-            Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Please Wait. The Program is Cleaning Up...");
-
-            //do your cleanup here
-
-            //allow main to run off
-            exitSystem = true;
-
-            //shutdown right away so there are no lingering threads
-            Environment.Exit(0);
-
-            return true;
-        }
-        #endregion
         public BotMainframe()
         {
            Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);   //Alt Capture Ctrl+C
             try
             {
-                memes = Directory.GetFiles(@".\meme");
-                cats = Directory.GetFiles(@".\cat");
+                memes = Directory.GetFiles(@"meme");
+                cats = Directory.GetFiles(@"cat");
             }
             catch (DirectoryNotFoundException notFoundEx)
             {
