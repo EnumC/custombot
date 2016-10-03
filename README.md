@@ -2,7 +2,7 @@
 
 Master Branch = Release Builds(.zip)
 
-Nightly Branch = Develope Builds(Source Code)
+Nightly Branch = Developer Builds(Source Code)
 
 ****Do Not**** Release Any Materials In The Nightly Branch.
 
