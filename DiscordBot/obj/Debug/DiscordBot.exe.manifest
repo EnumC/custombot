@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>F5i24DwSOg9K0kdQ5Yq4x6rZaVDt01kVygLw2pFfzx0=</dsig:DigestValue>
+        <dsig:DigestValue>iM0HBl+2EBMjwpEvq81NG+nk6EG76uD5THzyLoCqeMY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -168,13 +168,13 @@
       <dsig:DigestValue>KpRFRX0hGr2NYGfD+OF1fWekOUJ8C5WN2xtMtL4vKlQ=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="FodyWeavers.xml" size="77" writeableType="applicationData">
+  <file name="FodyWeavers.xml" size="81" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>DnKBIIMoiPS2CrKLlaELmY2fI4Rv/81ohhr+mG0h9wU=</dsig:DigestValue>
+      <dsig:DigestValue>G25SO1xCenVt7jlz/Uq1PvxEBkoIPJlXZW5KpaX1Je8=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

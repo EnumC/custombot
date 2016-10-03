@@ -20,3 +20,4 @@ C:\Users\Eric\Documents\DiscordBot\DiscordBot\DiscordBot\bin\Debug\DiscordBot.ex
 C:\Users\Eric\Documents\DiscordBot\DiscordBot\DiscordBot\bin\Debug\DiscordBot.application
 C:\Users\Eric\Documents\DiscordBot\DiscordBot\DiscordBot\obj\Debug\DiscordBot.exe.manifest
 C:\Users\Eric\Documents\DiscordBot\DiscordBot\DiscordBot\obj\Debug\DiscordBot.application
+C:\Users\Eric\Documents\DiscordBot\DiscordBot\DiscordBot\obj\Debug\DiscordBot.csprojResolveAssemblyReference.cache

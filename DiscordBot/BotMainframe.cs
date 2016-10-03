@@ -18,7 +18,7 @@ namespace DiscordBot
         private const string BUILD_INFO = "v0.0.2"; //Enter Build info here
         private DiscordClient _client;
         //private CommandService commands;
-
+        private string token = "MjMxOTYxMzg3NTQ1Mzk1MjAwDCtIAnA.qFlkW6R88xD5kj8k12oZt5EjLdk"; // Replace with Client ID!!!
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
         private string[] memes;
@@ -124,8 +124,6 @@ namespace DiscordBot
                     x.AllowMentionPrefix = true;
                     x.HelpMode = HelpMode.Public;
                 });
-
-                var token = "MjMxOTYxMzg3NTQ1Mzk1MjAw.CtIAnA.qFlkW6R88xD5kj8k12oZt5EjLdk";
 
                 CreateCommands();
 
