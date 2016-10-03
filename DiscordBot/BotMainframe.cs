@@ -18,7 +18,7 @@ namespace DiscordBot
         private const string BUILD_INFO = "v0.0.2"; //Enter Build info here
         private DiscordClient _client;
         //private CommandService commands;
-        private string token = "MjMxOTYxMzg3NTQ1Mzk1MjAwDCtIAnA.qFlkW6R88xD5kj8k12oZt5EjLdk"; // Replace with Client ID!!!
+        private string token = "!MjMxOTYxMzg3NTQ1Mzk1MjAw.CtOUaA.GTW-27_ftKT4u25Q52Uni0EyjT4"; // Replace with Client ID!!!
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
         private string[] memes;
@@ -92,11 +92,17 @@ namespace DiscordBot
             }
             catch (Exception e)
             {
+                Console.Clear();
+                Console.WriteLine();
                 Console.WriteLine("Oh No. The program have encountered a fatal error... Are you sure you know how to use this program? :/");
+                Console.WriteLine("This is a general exception caused during Discord initialization");
+                Console.WriteLine("This might be caused by invalid bot token! Press any key to print stack trace.");
+                Console.WriteLine("If it says \"401 Unauthorized\", that means you have an invalid token.");
                 errorReport();
                 Console.WriteLine();
                 Console.WriteLine("Full Stacktrace Below: ");
                 Console.WriteLine(e.ToString());
+                var cki = Console.ReadKey(true);
             }
         }
 
@@ -208,7 +214,7 @@ namespace DiscordBot
             Console.WriteLine();
             Console.WriteLine("Have any problems? Need support? Please contact the developer at eric@hypertech.io");
             Console.WriteLine();
-            Console.WriteLine("Press any key to terminate...");
+            Console.WriteLine("Press any key to terminate/Print Stacktrace");
             Console.ReadKey();
 
         }
