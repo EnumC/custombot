@@ -81,7 +81,7 @@ namespace DiscordBot
         #endregion
         public BotMainframe()
         {
-           // Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);   //Alt Capture Ctrl+C
+           Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);   //Alt Capture Ctrl+C
             try
             {
                 memes = Directory.GetFiles(@".\meme");
@@ -256,7 +256,7 @@ namespace DiscordBot
 
         }
 
-        /* Depreciated Exit Handler
+        
         protected static void ExitHandler(object sender, ConsoleCancelEventArgs args)
         {
             Console.WriteLine("\nThe program has been interrupted.");
@@ -269,6 +269,6 @@ namespace DiscordBot
             Console.WriteLine("Please Wait. The Program is Cleaning Up...");
             Environment.Exit(0);
         }
-        */
+        
     }
 }
