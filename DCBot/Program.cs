@@ -15,10 +15,10 @@ namespace BCBot
     class BotMainframe
     {
         //Field Variables
-        private const string BUILD_INFO = "v0.0.3"; //Enter Build info here
+        private const string BUILD_INFO = "v0.0.2"; //Enter Build info here
         private DiscordClient _client;
         //private CommandService commands;
-        private string token = "!MjMxOTYxMzg3NTQ1Mzk1MjAw.CtOUaA.GTW-27_ftKT4u25Q52Uni0EyjT4"; // Replace with Client ID!!!
+        private string token = "MjMxOTYxMzg3NTQ1Mzk1MjAw.CtOUaA.GTW-27_ftKT4u25Q52Uni0EyjT4"; // Replace with Client ID!!!
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
         private string[] memes;
