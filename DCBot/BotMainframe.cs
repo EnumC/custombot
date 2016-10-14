@@ -15,18 +15,20 @@ namespace BCBot
     class BotMainframe
     {
         //Field Variables
-        private const string BUILD_INFO = "v0.0.3"; //Enter Build info here
+        private const string BUILD_INFO = "v0.0.3-Alpha"; //Enter Build info here
         private DiscordClient _client;
         //private CommandService commands;
         private string token = "!MjMxOTYxMzg3NTQ1Mzk1MjAw.CtOUaA.GTW-27_ftKT4u25Q52Uni0EyjT4"; // Replace with Client ID!!!
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
+        private const string STATUSTEXT = " **Server Status**: http://server.mvgd.club:61208/ ";
         private string[] memes;
         private string[] cats;
         private string[] pendingText = new string[500];
         Random rand;
         private const ulong logChannelID = 219193851523497986;
         private ulong[] allowedUserID = { 88513309854138368, 170040753425219584, 210507266233860097 };
+        private string configDir = "";
         static void Main(string[] args)
         {
 
@@ -51,6 +53,19 @@ namespace BCBot
                 Console.WriteLine();
                 Console.WriteLine("Full Stacktrace Below: ");
                 Console.WriteLine(notFoundEx.ToString());
+            }
+            try
+            {
+               
+            }
+            catch(FileNotFoundException fileNotExist)
+            {
+                Console.WriteLine("Alert: Config File Could Not Be Found. Please Double Check If settings.config exists in the \"config\" folder");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine();
+                errorReport();
+                Console.WriteLine();
             }
             foreach (var item in memes)
             {
@@ -87,7 +102,7 @@ namespace BCBot
                 _client.ExecuteAndWait(async () =>
                 {
                     await _client.Connect(token, TokenType.Bot);
-                    _client.SetGame("Created By Eric1084");
+                    _client.SetGame("Created By Eric Q.");
                 });
             }
             catch (Exception e)
@@ -183,6 +198,12 @@ namespace BCBot
                         var role = e.Server.GetRole(232029034572283904);
                         Console.WriteLine(role);
                         user.AddRoles(role);
+                    });
+                cService.CreateCommand("status")
+                    .Description("Displays Status Of Server")
+                    .Do(async (e) =>
+                    {
+                        await e.Channel.SendMessage(STATUSTEXT);
                     });
                 cService.CreateCommand("version")
                     .Description("Displays build and version number")
