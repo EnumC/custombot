@@ -18,7 +18,7 @@ namespace BCBot
         private const string BUILD_INFO = "v0.0.3-Alpha"; //Enter Build info here
         private DiscordClient _client;
         //private CommandService commands;
-        private string token = "!MjMxOTYxMzg3NTQ1Mzk1MjAw.CtOUaA.GTW-27_ftKT4u25Q52Uni0EyjT4"; // Replace with Client ID!!!
+        private string token = "MjMzMzgxNjAyMzkzMDYzNDI0.CuiDIg.xN2wDx7Jn3yvyqkXfOOa_Kb63IU"; // Replace with Client ID!!!
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
         private const string STATUSTEXT = " **Server Status**: http://server.mvgd.club:61208/ ";
@@ -27,11 +27,11 @@ namespace BCBot
         private string[] pendingText = new string[500];
         Random rand;
         private const ulong logChannelID = 219193851523497986;
-        private ulong[] allowedUserID = { 88513309854138368, 170040753425219584, 210507266233860097 };
+        private ulong[] allowedUserID = new ulong[10];
         private string configDir = "";
         static void Main(string[] args)
         {
-
+            
 
             BotMainframe mainframe = new BotMainframe();
             mainframe.Start();
@@ -75,6 +75,21 @@ namespace BCBot
             {
                 Console.WriteLine(item.ToString());
             }
+
+            int counter = 0; //Stuff for reading
+            string line;
+
+            Console.WriteLine("Reading file for admin id!");
+            StreamReader file = new StreamReader(@"admin.txt");
+            while ((line = file.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+                allowedUserID[counter] = ulong.Parse(line);
+                counter++;
+            }
+
+            file.Close();
+
             rand = new Random();
             Console.WriteLine("Constructor Done");
         }
