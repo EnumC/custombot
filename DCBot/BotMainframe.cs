@@ -1,11 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,13 +19,14 @@ namespace BCBot
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
         private const string STATUSTEXT = " **Server Status**: http://server.mvgd.club:61208/ ";
+        //private string configDir = "";
         private string[] memes;
         private string[] cats;
         private string[] pendingText = new string[500];
         Random rand;
         private const ulong logChannelID = 219193851523497986;
         private ulong[] allowedUserID = new ulong[10];
-        private string configDir = "";
+        FileSystemWatcher watcher = new FileSystemWatcher();
         static void Main(string[] args)
         {
             
@@ -36,11 +34,30 @@ namespace BCBot
             BotMainframe mainframe = new BotMainframe();
             mainframe.Start();
         }
-
-
         public BotMainframe()
         {
+            InitializeBot();
+        }
+
+        private void InitializeBot()
+        {
             Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);   //Alt Capture Ctrl+C
+            var directory = Directory.GetCurrentDirectory();
+            directory = directory + @"\config";
+            watcher.Path = directory;
+            /* Watch for changes in LastAccess and LastWrite times, and 
+               the renaming of files or directories. */
+            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+               | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            // Only watch text files.
+            watcher.Filter = "*.txt";
+
+            // Add event handlers.
+            watcher.Changed += new FileSystemEventHandler(OnChanged);
+
+            // Begin watching.
+            watcher.EnableRaisingEvents = true;
+
             try
             {
                 memes = Directory.GetFiles(@"meme");
@@ -78,9 +95,9 @@ namespace BCBot
 
             int counter = 0; //Stuff for reading
             string line;
-
-            Console.WriteLine("Reading file for admin id!");
-            StreamReader file = new StreamReader(@"admin.txt");
+            Console.WriteLine("----------------------");
+            Console.WriteLine("Admin IDs Detected: ");
+            StreamReader file = new StreamReader(@"config/admin.txt");
             while ((line = file.ReadLine()) != null)
             {
                 Console.WriteLine(line);
@@ -91,6 +108,7 @@ namespace BCBot
             file.Close();
 
             rand = new Random();
+            Console.WriteLine("----------------------");
             Console.WriteLine("Constructor Done");
         }
         public void Start()
@@ -113,7 +131,7 @@ namespace BCBot
                 });
 
                 CreateCommands();
-
+                new Task(LoopFeatures).Start();
                 _client.ExecuteAndWait(async () =>
                 {
                     await _client.Connect(token, TokenType.Bot);
@@ -244,7 +262,12 @@ namespace BCBot
         private void logCommand()
         {
         }
-
+        private void LoopFeatures()
+        {
+            //Thread.Sleep(2000);
+            Console.WriteLine("Async Test");
+           // LoopFeatures();
+        }
         private void errorReport()
         {
             Console.WriteLine();
@@ -253,6 +276,16 @@ namespace BCBot
             Console.WriteLine("Press any key to terminate/Print Stacktrace");
             Console.ReadKey();
 
+        }
+
+        private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            // Specify what is done when a file is changed, created, or deleted.
+            Console.WriteLine("----------------------");
+            Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
+            Console.WriteLine("Config - Admin.txt Have been modified.");
+            Console.WriteLine("----------------------");
+            InitializeBot();
         }
 
 
