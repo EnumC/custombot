@@ -12,7 +12,8 @@ namespace BCBot
     class BotMainframe
     {
         //Field Variables
-        private const string BUILD_INFO = "v0.0.3-Alpha"; //Enter Build info here
+        private const string BUILD_INFO = "v0.0.4-Nightly"; //Enter Build info here
+        private Boolean stable = false; //Stable build?
         private DiscordClient _client;
         //private CommandService commands;
         private string token = "MjMzMzgxNjAyMzkzMDYzNDI0.CuiDIg.xN2wDx7Jn3yvyqkXfOOa_Kb63IU"; // Replace with Client ID!!!
@@ -24,7 +25,7 @@ namespace BCBot
         private string[] cats;
         private string[] pendingText = new string[500];
         Random rand;
-        private const ulong logChannelID = 219193851523497986;
+        private const ulong logChannelID = 241389217656209409;
         private ulong[] allowedUserID = new ulong[10];
         FileSystemWatcher watcher = new FileSystemWatcher();
         static void Main(string[] args)
@@ -125,7 +126,7 @@ namespace BCBot
 
                 _client.UsingCommands(x =>
                 {
-                    x.PrefixChar = '~';
+                    x.PrefixChar = '#';
                     x.AllowMentionPrefix = true;
                     x.HelpMode = HelpMode.Public;
                 });
@@ -135,7 +136,7 @@ namespace BCBot
                 _client.ExecuteAndWait(async () =>
                 {
                     await _client.Connect(token, TokenType.Bot);
-                    _client.SetGame("Created By Eric Q.");
+                    _client.SetGame("Nightly Build. Unstable!!!");
                 });
             }
             catch (Exception e)
@@ -199,7 +200,8 @@ namespace BCBot
                     .Do(async (e) =>
                     {
                         Channel logChannel;
-                        int numToPurge = int.Parse(e.GetArg("numToPurge"));
+                        int numToPurge = int.Parse(e.GetArg("numToPurge")) + 2;
+                        await e.Channel.SendMessage("Please wait...");
                         if (allowedUserID.Contains(e.User.Id))
                         {
                             await e.Channel.DeleteMessages(await e.Channel.DownloadMessages(numToPurge));
@@ -222,6 +224,33 @@ namespace BCBot
                         await e.Channel.DeleteMessages(await e.Channel.DownloadMessages(1));
                         await e.Channel.SendMessage(e.GetArg("echoMsgString"));
                     });
+                cService.CreateCommand("suggest")
+                    .Description("Suggest something.")
+                    .Parameter("suggestion_goes_here", ParameterType.Required)
+                    .Do(async (e) =>
+                    {
+                        await e.Channel.DownloadMessages(1);
+                        //await e.Channel.SendMessage(e.GetArg("suggestion_goes_here"));
+                        StreamWriter sw = new StreamWriter(@"config/suggestions.log");
+                        sw.WriteLine(e.GetArg("suggestion_goes_here"));
+                        sw.Close();
+                        await e.Channel.SendMessage(e.User.Mention.ToString() + "Your Suggestion Have Been Logged. Operations have been notified.");
+                        Console.WriteLine(e.User.Mention);
+                    });
+                cService.CreateCommand("approve")
+					.Description("Approves a command")
+					.Do(async (e) =>
+					{
+						if (allowedUserID.Contains(e.User.Id))
+						{
+							await e.Channel.SendMessage("INFO: " + e.Channel.GetUser(e.User.Id) + " have approved " + pastCommand);
+							permModOverride = true;
+							await e.Channel.SendMessage(PrefixCharacter + pastCommand);
+						}
+						else {
+							await e.Channel.SendMessage("INFO: " + e.Channel.GetUser(e.User.Id) + " have insufficient permission.");
+						}
+					});
                 cService.CreateCommand("custom")
                     .Description("Custom Command Remains A Mystery")
                     .Do((e) =>
@@ -242,6 +271,10 @@ namespace BCBot
                     .Description("Displays build and version number")
                     .Do(async (e) =>
                     {
+                        if(!stable)
+                        {
+                            await e.Channel.SendMessage("Warning: This version is unstable. If you are using this bot frequently, please switch to release branch!");
+                        }
                         await e.Channel.SendMessage(BUILD_INFO);
                     });
             }
