@@ -237,6 +237,20 @@ namespace BCBot
                         await e.Channel.SendMessage(e.User.Mention.ToString() + "Your Suggestion Have Been Logged. Operations have been notified.");
                         Console.WriteLine(e.User.Mention);
                     });
+                cService.CreateCommand("approve")
+					.Description("Approves a command")
+					.Do(async (e) =>
+					{
+						if (allowedUserID.Contains(e.User.Id))
+						{
+							await e.Channel.SendMessage("INFO: " + e.Channel.GetUser(e.User.Id) + " have approved " + pastCommand);
+							permModOverride = true;
+							await e.Channel.SendMessage(PrefixCharacter + pastCommand);
+						}
+						else {
+							await e.Channel.SendMessage("INFO: " + e.Channel.GetUser(e.User.Id) + " have insufficient permission.");
+						}
+					});
                 cService.CreateCommand("custom")
                     .Description("Custom Command Remains A Mystery")
                     .Do((e) =>
