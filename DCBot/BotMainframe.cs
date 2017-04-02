@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Mailgun;
 using System;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BCBot
         private Boolean stable = false; //Stable build?
         private DiscordClient _client;
         //private CommandService commands;
-        private string token = "MjMzMzgxNjAyMzkzMDYzNDI0.CuiDIg.xN2wDx7Jn3yvyqkXfOOa_Kb63IU"; // Replace with Client ID!!!
+        private string token = "MTg4Nzk3NzQyNzQ1NjQ5MTUz.C8IEIg.veLpXZuXQdczTarjuKZgTLtRfIQ"; // Replace with Client ID!!!
         //Error Strings
         private const string notFoundErrStr = "CRITICAL: Required File Directory Not Found! Please Check If You Have The Neccessary Files!";
         private const string STATUSTEXT = " **Server Status**: http://server.mvgd.club:61208/ ";
@@ -28,6 +29,9 @@ namespace BCBot
         private const ulong logChannelID = 241389217656209409;
         private ulong[] allowedUserID = new ulong[10];
         FileSystemWatcher watcher = new FileSystemWatcher();
+        private char prefixCharacter = ' ';
+        private Boolean permModOverride = false;
+        private string pastCommand = "NULL";
         static void Main(string[] args)
         {
             
@@ -42,23 +46,30 @@ namespace BCBot
 
         private void InitializeBot()
         {
+            Console.WriteLine("Init");
             Console.CancelKeyPress += new ConsoleCancelEventHandler(ExitHandler);   //Alt Capture Ctrl+C
-            var directory = Directory.GetCurrentDirectory();
-            directory = directory + @"\config";
+            Console.WriteLine("Init");
+            var directory = System.AppDomain.CurrentDomain.BaseDirectory;
+            Console.WriteLine("Init");
+            directory = directory + @"config";
+            Console.WriteLine("Init");
+            Console.WriteLine(directory);
             watcher.Path = directory;
+            Console.WriteLine("Init");
             /* Watch for changes in LastAccess and LastWrite times, and 
                the renaming of files or directories. */
             watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
                | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             // Only watch text files.
+            Console.WriteLine("Init");
             watcher.Filter = "*.txt";
-
+            Console.WriteLine("Init");
             // Add event handlers.
             watcher.Changed += new FileSystemEventHandler(OnChanged);
-
+            Console.WriteLine("Init");
             // Begin watching.
             watcher.EnableRaisingEvents = true;
-
+            Console.WriteLine("InitEnd");
             try
             {
                 memes = Directory.GetFiles(@"meme");
@@ -111,6 +122,7 @@ namespace BCBot
             rand = new Random();
             Console.WriteLine("----------------------");
             Console.WriteLine("Constructor Done");
+
         }
         public void Start()
         {
@@ -127,17 +139,21 @@ namespace BCBot
                 _client.UsingCommands(x =>
                 {
                     x.PrefixChar = '#';
+                    prefixCharacter = x.PrefixChar.Value;
                     x.AllowMentionPrefix = true;
                     x.HelpMode = HelpMode.Public;
                 });
 
                 CreateCommands();
-                new Task(LoopFeatures).Start();
+
                 _client.ExecuteAndWait(async () =>
                 {
                     await _client.Connect(token, TokenType.Bot);
                     _client.SetGame("Nightly Build. Unstable!!!");
+                    new Task(LoopFeatures).Start();
+                    Console.WriteLine("Note: Loop Features Enabled!");
                 });
+                
             }
             catch (Exception e)
             {
@@ -153,6 +169,7 @@ namespace BCBot
                 Console.WriteLine(e.ToString());
                 var cki = Console.ReadKey(true);
             }
+                
         }
 
         public void CreateCommands()
@@ -200,12 +217,12 @@ namespace BCBot
                     .Do(async (e) =>
                     {
                         Channel logChannel;
-                        int numToPurge = int.Parse(e.GetArg("numToPurge")) + 2;
-                        await e.Channel.SendMessage("Please wait...");
+                        int numToPurge = int.Parse(e.GetArg("numToPurge")) + 1;
+                        await e.Channel.SendMessage("Please wait..." + " Purging the last " + (numToPurge -1) + " messages.");
+                        Thread.Sleep(500);
                         if (allowedUserID.Contains(e.User.Id))
                         {
-                            await e.Channel.DeleteMessages(await e.Channel.DownloadMessages(numToPurge));
-                            await e.Channel.SendMessage("Purging the last " + numToPurge + " messages.");
+                            await e.Channel.DeleteMessages(await e.Channel.DownloadMessages(numToPurge+1));
                             logChannel = e.Server.GetChannel(logChannelID);
                             await logChannel.SendMessage("NOTE: Sensitive Command Have Been Issued!");
                             await logChannel.SendMessage("`" + e.Message.RawText + " ` Have Been Issued By: " + e.Channel.GetUser(e.User.Id));
@@ -245,7 +262,7 @@ namespace BCBot
 						{
 							await e.Channel.SendMessage("INFO: " + e.Channel.GetUser(e.User.Id) + " have approved " + pastCommand);
 							permModOverride = true;
-							await e.Channel.SendMessage(PrefixCharacter + pastCommand);
+							await e.Channel.SendMessage(prefixCharacter + pastCommand);
 						}
 						else {
 							await e.Channel.SendMessage("INFO: " + e.Channel.GetUser(e.User.Id) + " have insufficient permission.");
@@ -297,9 +314,20 @@ namespace BCBot
         }
         private void LoopFeatures()
         {
-            //Thread.Sleep(2000);
-            Console.WriteLine("Async Test");
-           // LoopFeatures();
+            _client.ExecuteAndWait(async () =>
+            {
+                //Console.WriteLine("Looped!");
+                _client.SetGame("Nightly Build. Unstable!!!");
+                Thread.Sleep(120000);
+                //Console.WriteLine("Looped!");
+                _client.SetGame("Prefix: #");
+                Thread.Sleep(120000);
+                _client.SetGame("Created By: EnumC");
+                Thread.Sleep(120000);
+                LoopFeatures();
+            });
+            
+            
         }
         private void errorReport()
         {

@@ -71,6 +71,10 @@
       <HintPath>..\packages\Discord.OAuth2.1.0.0\lib\net451\Discord.OAuth2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="mailgun_csharp, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\mailgun_csharp.0.5.0.0\lib\net45\mailgun_csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Authentication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Authentication.1.0.0\lib\net451\Microsoft.AspNetCore.Authentication.dll</HintPath>
       <Private>True</Private>
