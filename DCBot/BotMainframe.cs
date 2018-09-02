@@ -34,8 +34,6 @@ namespace BCBot
         private string pastCommand = "NULL";
         static void Main(string[] args)
         {
-            
-
             BotMainframe mainframe = new BotMainframe();
             mainframe.Start();
         }
@@ -130,8 +128,8 @@ namespace BCBot
             {
                 _client = new DiscordClient(x =>
                 {
-                    x.AppName = "Test";
-                    x.AppUrl = "https://fewdpew.me";
+                    x.AppName = "CorporateBot";
+                    x.AppUrl = "https://enumc.com";
                     x.LogLevel = LogSeverity.Verbose;
                     x.LogHandler = Log;
                 });
@@ -297,7 +295,7 @@ namespace BCBot
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unhandled Exception. Something went horribly wrong. Please check with the software developer :D");
+                Console.WriteLine("Unhandled Exception. Something went horribly wrong. Please file a bug report with the full stacktrace.");
                 errorReport();
                 Console.WriteLine();
                 Console.WriteLine("Full Stacktrace Below: ");
@@ -324,6 +322,8 @@ namespace BCBot
                 Thread.Sleep(120000);
                 _client.SetGame("Created By: EnumC");
                 Thread.Sleep(120000);
+                _client.SetGame(BUILD_INFO);
+                Thread.Sleep(60000);
                 LoopFeatures();
             });
             
@@ -332,11 +332,10 @@ namespace BCBot
         private void errorReport()
         {
             Console.WriteLine();
-            Console.WriteLine("Have any problems? Need support? Please contact the developer at eric@hypertech.io");
+            Console.WriteLine("Have any problems? Need support? Please contact the developer at eric@enumc.com");
             Console.WriteLine();
             Console.WriteLine("Press any key to terminate/Print Stacktrace");
             Console.ReadKey();
-
         }
 
         private void OnChanged(object source, FileSystemEventArgs e)
