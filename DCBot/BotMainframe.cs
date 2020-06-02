@@ -216,6 +216,31 @@ namespace BCBot
                             await e.Channel.SendMessage("`" + e.Message.RawText + " `" + " cannot be executed!");
                         }
                     });
+                cService.CreateCommand("spam")
+                    .Description("Purge x number of messages")
+                    .Parameter("spamAmount", ParameterType.Required)
+                    .Do(async (e) =>
+                    {
+                        Channel logChannel;
+                        int spamAmount = int.Parse(e.GetArg("spamAmount"));
+                        await e.Channel.SendMessage("Please wait...");
+                        if (allowedUserID.Contains(e.User.Id))
+                        {
+                            await e.Channel.SendMessage("Rip Channel. Starting Spam in 3 seconds!!!");
+                            for(int count = 0; count < spamAmount; count++)
+                            {
+                                await e.Channel.SendMessage("Oh yay it works! CONGRADUATIONS!!!");
+                            }
+                            logChannel = e.Server.GetChannel(logChannelID);
+                            await logChannel.SendMessage("NOTE: Sensitive Command Have Been Issued!");
+                            await logChannel.SendMessage("`" + e.Message.RawText + " ` Have Been Issued By: " + e.Channel.GetUser(e.User.Id));
+                        }
+                        else
+                        {
+                            await e.Channel.SendMessage("WARN: " + e.Channel.GetUser(e.User.Id) + " is not included in the trusted user array. ");
+                            await e.Channel.SendMessage("`" + e.Message.RawText + " `" + " cannot be executed!");
+                        }
+                    });
                 cService.CreateCommand("say")
                     .Description("Echos String specified")
                     .Parameter("echoMsgString", ParameterType.Required)
